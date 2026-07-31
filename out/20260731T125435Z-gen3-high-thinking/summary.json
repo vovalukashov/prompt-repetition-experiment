@@ -1,0 +1,316 @@
+{
+  "run_started_utc": "2026-07-31T12:56:43.106Z",
+  "run_finished_utc": "2026-07-31T13:10:50.998Z",
+  "provider": "google",
+  "model_id": "gemini-3.5-flash-lite",
+  "model_version_reported": "gemini-3.5-flash-lite",
+  "reasoning_mode": "high",
+  "reasoning_disable_method": "not applicable; thinking deliberately enabled",
+  "preset": "standard",
+  "dataset_sha256": "ffbe5c9aa5708b3abab695a3ac40d4829d7c83fce0541684264f9623e997384c",
+  "repeats_per_condition": 1,
+  "request_defaults": {
+    "temperature": 0,
+    "max_output_tokens": 64,
+    "system_prompt": null,
+    "tools": "disabled",
+    "web_search": "disabled",
+    "response_format": "text"
+  },
+  "n_pairs": 160,
+  "requests_total": 360,
+  "requests_failed": 0,
+  "overall": {
+    "n": 160,
+    "baseline_correct": 160,
+    "baseline_accuracy": 1.0,
+    "repeat_correct": 160,
+    "repeat_accuracy": 1.0,
+    "delta_pp": 0.0,
+    "fixed": 0,
+    "broken": 0,
+    "both_correct": 160,
+    "both_wrong": 0,
+    "mcnemar_exact_p": 1.0,
+    "bootstrap_ci_95_pp": [
+      0.0,
+      0.0
+    ],
+    "verdict": "unclear",
+    "near_ceiling": true
+  },
+  "by_suite": {
+    "stress": {
+      "n": 160,
+      "baseline_correct": 160,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 160,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 160,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "practical": {
+      "n": 0
+    }
+  },
+  "by_category": {
+    "middle_match_en": {
+      "n": 40,
+      "baseline_correct": 40,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 40,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "middle_match_ru": {
+      "n": 40,
+      "baseline_correct": 40,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 40,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "name_index_en": {
+      "n": 40,
+      "baseline_correct": 40,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 40,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "name_index_ru": {
+      "n": 40,
+      "baseline_correct": 40,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 40,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    }
+  },
+  "efficiency": {
+    "baseline": {
+      "n": 160,
+      "latency_ms_median": 2422.8845,
+      "latency_ms_mean": 2716.92351875,
+      "latency_ms_p95": 4952.288,
+      "input_tokens_total": 39935,
+      "input_tokens_mean": 249.59375,
+      "output_tokens_total": 594,
+      "output_tokens_mean": 3.7125,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 168046,
+      "cost_usd_total": 0.4335805,
+      "cost_usd_mean": 0.0027098781249999997
+    },
+    "repeat_2": {
+      "n": 160,
+      "latency_ms_median": 2272.364,
+      "latency_ms_mean": 2580.4060625,
+      "latency_ms_p95": 4456.354,
+      "input_tokens_total": 79870,
+      "input_tokens_mean": 499.1875,
+      "output_tokens_total": 593,
+      "output_tokens_mean": 3.70625,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 155061,
+      "cost_usd_total": 0.413096,
+      "cost_usd_mean": 0.00258185
+    },
+    "input_token_ratio": 2.0,
+    "latency_median_delta_pct": -6.212450490314336,
+    "latency_median_delta_ms": -150.52050000000008,
+    "paired_latency_delta_ms_median": -105.77100000000007
+  },
+  "repeats_analysis": null,
+  "stability_pilot": {
+    "n_tasks": 20,
+    "disagreements": 0,
+    "disagreement_rate": 0.0,
+    "threshold": 0.05,
+    "repeats_recommended": 1,
+    "rows": [
+      {
+        "task_id": "name_index_ru_037",
+        "answer_1": "Степан Михайлов",
+        "answer_2": "Степан Михайлов",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_021",
+        "answer_1": "Алина Ковалёва",
+        "answer_2": "Алина Ковалёва",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_002",
+        "answer_1": "Диана Полякова",
+        "answer_2": "Диана Полякова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_006",
+        "answer_1": "Георгий Никитин",
+        "answer_2": "Георгий Никитин",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_040",
+        "answer_1": "Виктор Волков",
+        "answer_2": "Виктор Волков",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_004",
+        "answer_1": "Людмила Сорокина",
+        "answer_2": "Людмила Сорокина",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_030",
+        "answer_1": "Benjamin Hall",
+        "answer_2": "Benjamin Hall",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_006",
+        "answer_1": "Christian Harris",
+        "answer_2": "Christian Harris",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_016",
+        "answer_1": "Дарья Максимова",
+        "answer_2": "Дарья Максимова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_027",
+        "answer_1": "Thomas Rivera",
+        "answer_2": "Thomas Rivera",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_033",
+        "answer_1": "Фёдор Егоров",
+        "answer_2": "Фёдор Егоров",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_040",
+        "answer_1": "Elias Baker",
+        "answer_2": "Elias Baker",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_005",
+        "answer_1": "Алина Антонова",
+        "answer_2": "Алина Антонова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_030",
+        "answer_1": "Matthew Johnson",
+        "answer_2": "Matthew Johnson",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_035",
+        "answer_1": "Gabriel Mitchell",
+        "answer_2": "Gabriel Mitchell",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_031",
+        "answer_1": "Aaron Carter",
+        "answer_2": "Aaron Carter",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_038",
+        "answer_1": "Наталья Николаева",
+        "answer_2": "Наталья Николаева",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_024",
+        "answer_1": "Jackson Williams",
+        "answer_2": "Jackson Williams",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_004",
+        "answer_1": "Наталья Морозова",
+        "answer_2": "Наталья Морозова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_029",
+        "answer_1": "Julian Campbell",
+        "answer_2": "Julian Campbell",
+        "agree": true
+      }
+    ]
+  },
+  "parse_errors": {
+    "baseline": 0,
+    "repeat_2": 0
+  },
+  "finish_reasons": {
+    "STOP": 320
+  },
+  "spent_usd": 0.9659297999999996
+}
