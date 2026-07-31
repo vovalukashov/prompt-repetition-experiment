@@ -317,6 +317,11 @@ def main() -> int:
     ap.add_argument("--probe", action="store_true", help="single request, print raw response, exit")
     ap.add_argument("--pilot-only", action="store_true")
     ap.add_argument("--skip-pilot", action="store_true")
+    ap.add_argument("--suite", choices=("stress", "practical"), default=None,
+                    help="ablation: restrict the run to one suite")
+    ap.add_argument("--max-output-tokens", type=int, default=None,
+                    help="ablation: override the output cap")
+    ap.add_argument("--tag", default=None, help="suffix for the output directory name")
     args = ap.parse_args()
 
     load_dotenv(ROOT / ".env")
@@ -325,9 +330,16 @@ def main() -> int:
         cfg["experiment"]["preset"] = args.preset
     preset = cfg["experiment"]["preset"]
 
+    if args.max_output_tokens:
+        cfg["request_defaults"]["max_output_tokens"] = args.max_output_tokens
+    cfg["experiment"]["ablation"] = {"suite": args.suite, "tag": args.tag,
+                                     "max_output_tokens": args.max_output_tokens}
+
     tasks_path = ROOT / "data" / "tasks.jsonl"
     dataset_sha = hashlib.sha256(tasks_path.read_bytes()).hexdigest()
     tasks = load_tasks(tasks_path, preset)
+    if args.suite:
+        tasks = [t for t in tasks if t["suite"] == args.suite]
 
     if args.probe:
         adapter = GeminiAdapter(cfg["models"][0], cfg["request_defaults"],
@@ -339,6 +351,8 @@ def main() -> int:
         return 0 if status == 200 else 1
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    if args.tag:
+        stamp = f"{stamp}-{args.tag}"
     out_dir = ROOT / cfg["output"]["root_dir"] / stamp
     (out_dir / "charts").mkdir(parents=True, exist_ok=True)
     (out_dir / "dataset.sha256").write_text(f"{dataset_sha}  data/tasks.jsonl\n")

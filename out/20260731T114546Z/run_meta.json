@@ -1,0 +1,210 @@
+{
+  "run_started_utc": "2026-07-31T11:46:09.051Z",
+  "preset": "standard",
+  "n_tasks": 220,
+  "dataset_sha256": "ffbe5c9aa5708b3abab695a3ac40d4829d7c83fce0541684264f9623e997384c",
+  "model": {
+    "label": "primary",
+    "provider": "google",
+    "api_style": "gemini_generate_content",
+    "model_id": "gemini-2.5-flash-lite",
+    "base_url": "https://generativelanguage.googleapis.com/v1beta",
+    "reasoning_mode": "disabled",
+    "reasoning_disable_method": "generationConfig.thinkingConfig.thinkingBudget=0",
+    "reasoning_evidence_field": "usageMetadata.thoughtsTokenCount",
+    "request_overrides": {},
+    "pricing": {
+      "input_per_million_usd": 0.1,
+      "output_per_million_usd": 0.4,
+      "cached_input_per_million_usd": 0.025,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "retrieved_utc": "2026-07-31"
+    }
+  },
+  "api_key_env": "GOOGLE_GENERATIVE_AI_API_KEY",
+  "request_defaults": {
+    "temperature": 0,
+    "max_output_tokens": 64,
+    "system_prompt": null,
+    "tools": "disabled",
+    "web_search": "disabled",
+    "response_format": "text"
+  },
+  "experiment": {
+    "seed": 20260731,
+    "preset": "standard",
+    "repeats_per_condition": 1,
+    "warmup_requests": 5,
+    "concurrency": 1,
+    "request_timeout_seconds": 120,
+    "max_retries": 5,
+    "max_total_requests": 560,
+    "max_budget_usd": 1.0,
+    "bootstrap_resamples": 10000,
+    "stability_pilot_tasks": 20
+  },
+  "warmup": [
+    {
+      "i": 1,
+      "http_status": 200,
+      "latency_ms": 714.656,
+      "ok": true
+    },
+    {
+      "i": 2,
+      "http_status": 200,
+      "latency_ms": 430.807,
+      "ok": true
+    },
+    {
+      "i": 3,
+      "http_status": 200,
+      "latency_ms": 552.337,
+      "ok": true
+    },
+    {
+      "i": 4,
+      "http_status": 200,
+      "latency_ms": 372.106,
+      "ok": true
+    },
+    {
+      "i": 5,
+      "http_status": 200,
+      "latency_ms": 494.579,
+      "ok": true
+    }
+  ],
+  "stability_pilot": {
+    "n_tasks": 20,
+    "disagreements": 0,
+    "disagreement_rate": 0.0,
+    "threshold": 0.05,
+    "repeats_recommended": 1,
+    "rows": [
+      {
+        "task_id": "name_index_ru_037",
+        "answer_1": "Зоя Орлова",
+        "answer_2": "Зоя Орлова",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_011",
+        "answer_1": "E16",
+        "answer_2": "E16",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_021",
+        "answer_1": "Алина Ковалёва",
+        "answer_2": "Алина Ковалёва",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_002",
+        "answer_1": "Елена Волкова",
+        "answer_2": "Елена Волкова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_006",
+        "answer_1": "Андрей Сергеев",
+        "answer_2": "Андрей Сергеев",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_040",
+        "answer_1": "Екатерина Лебедева",
+        "answer_2": "Екатерина Лебедева",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_006",
+        "answer_1": "77.99",
+        "answer_2": "77.99",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_003",
+        "answer_1": "215",
+        "answer_2": "215",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_004",
+        "answer_1": "Даниил Степанов",
+        "answer_2": "Даниил Степанов",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_003",
+        "answer_1": "35.34",
+        "answer_2": "35.34",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_030",
+        "answer_1": "Benjamin Hall",
+        "answer_2": "Benjamin Hall",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_006",
+        "answer_1": "Christian Harris",
+        "answer_2": "Christian Harris",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_016",
+        "answer_1": "Дарья Максимова",
+        "answer_2": "Дарья Максимова",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_012",
+        "answer_1": "67.79",
+        "answer_2": "67.79",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_027",
+        "answer_1": "Anthony Reyes",
+        "answer_2": "Anthony Reyes",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_033",
+        "answer_1": "Фёдор Егоров",
+        "answer_2": "Фёдор Егоров",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_004",
+        "answer_1": "182",
+        "answer_2": "182",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_040",
+        "answer_1": "Nolan Morgan",
+        "answer_2": "Nolan Morgan",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_010",
+        "answer_1": "118.75",
+        "answer_2": "118.75",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_005",
+        "answer_1": "Алина Антонова",
+        "answer_2": "Алина Антонова",
+        "agree": true
+      }
+    ]
+  },
+  "run_finished_utc": "2026-07-31T11:49:41.603Z",
+  "requests_made": 486,
+  "spent_usd": 0.015835399999999993
+}

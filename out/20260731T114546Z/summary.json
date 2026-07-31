@@ -1,0 +1,427 @@
+{
+  "run_started_utc": "2026-07-31T11:46:09.051Z",
+  "run_finished_utc": "2026-07-31T11:49:41.603Z",
+  "provider": "google",
+  "model_id": "gemini-2.5-flash-lite",
+  "model_version_reported": "gemini-2.5-flash-lite",
+  "reasoning_mode": "disabled",
+  "reasoning_disable_method": "generationConfig.thinkingConfig.thinkingBudget=0",
+  "preset": "standard",
+  "dataset_sha256": "ffbe5c9aa5708b3abab695a3ac40d4829d7c83fce0541684264f9623e997384c",
+  "repeats_per_condition": 1,
+  "request_defaults": {
+    "temperature": 0,
+    "max_output_tokens": 64,
+    "system_prompt": null,
+    "tools": "disabled",
+    "web_search": "disabled",
+    "response_format": "text"
+  },
+  "n_pairs": 220,
+  "requests_total": 480,
+  "requests_failed": 0,
+  "overall": {
+    "n": 220,
+    "baseline_correct": 89,
+    "baseline_accuracy": 0.40454545454545454,
+    "repeat_correct": 154,
+    "repeat_accuracy": 0.7,
+    "delta_pp": 29.54545454545454,
+    "fixed": 81,
+    "broken": 16,
+    "both_correct": 73,
+    "both_wrong": 50,
+    "mcnemar_exact_p": 1.2385312683552126e-11,
+    "bootstrap_ci_95_pp": [
+      21.818181818181817,
+      37.27272727272727
+    ],
+    "verdict": "improvement",
+    "near_ceiling": false
+  },
+  "by_suite": {
+    "stress": {
+      "n": 160,
+      "baseline_correct": 58,
+      "baseline_accuracy": 0.3625,
+      "repeat_correct": 120,
+      "repeat_accuracy": 0.75,
+      "delta_pp": 38.75,
+      "fixed": 73,
+      "broken": 11,
+      "both_correct": 47,
+      "both_wrong": 29,
+      "mcnemar_exact_p": 2.2490938201170897e-12,
+      "bootstrap_ci_95_pp": [
+        28.749999999999996,
+        48.125
+      ],
+      "verdict": "improvement",
+      "near_ceiling": false
+    },
+    "practical": {
+      "n": 60,
+      "baseline_correct": 31,
+      "baseline_accuracy": 0.5166666666666667,
+      "repeat_correct": 34,
+      "repeat_accuracy": 0.5666666666666667,
+      "delta_pp": 4.999999999999993,
+      "fixed": 8,
+      "broken": 5,
+      "both_correct": 26,
+      "both_wrong": 21,
+      "mcnemar_exact_p": 0.5810546875,
+      "bootstrap_ci_95_pp": [
+        -6.666666666666667,
+        16.666666666666664
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    }
+  },
+  "by_category": {
+    "date_interval_ru": {
+      "n": 12,
+      "baseline_correct": 5,
+      "baseline_accuracy": 0.4166666666666667,
+      "repeat_correct": 6,
+      "repeat_accuracy": 0.5,
+      "delta_pp": 8.333333333333332,
+      "fixed": 2,
+      "broken": 1,
+      "both_correct": 4,
+      "both_wrong": 5,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        -16.666666666666664,
+        33.33333333333333
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "filter_record_ru": {
+      "n": 12,
+      "baseline_correct": 8,
+      "baseline_accuracy": 0.6666666666666666,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 33.333333333333336,
+      "fixed": 4,
+      "broken": 0,
+      "both_correct": 8,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 0.125,
+      "bootstrap_ci_95_pp": [
+        8.333333333333332,
+        58.333333333333336
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "letter_count_ru": {
+      "n": 12,
+      "baseline_correct": 6,
+      "baseline_accuracy": 0.5,
+      "repeat_correct": 4,
+      "repeat_accuracy": 0.3333333333333333,
+      "delta_pp": -16.666666666666668,
+      "fixed": 2,
+      "broken": 4,
+      "both_correct": 2,
+      "both_wrong": 4,
+      "mcnemar_exact_p": 0.6875,
+      "bootstrap_ci_95_pp": [
+        -58.333333333333336,
+        25.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "middle_match_en": {
+      "n": 40,
+      "baseline_correct": 16,
+      "baseline_accuracy": 0.4,
+      "repeat_correct": 19,
+      "repeat_accuracy": 0.475,
+      "delta_pp": 7.499999999999996,
+      "fixed": 8,
+      "broken": 5,
+      "both_correct": 11,
+      "both_wrong": 16,
+      "mcnemar_exact_p": 0.5810546875,
+      "bootstrap_ci_95_pp": [
+        -10.0,
+        25.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "middle_match_ru": {
+      "n": 40,
+      "baseline_correct": 13,
+      "baseline_accuracy": 0.325,
+      "repeat_correct": 21,
+      "repeat_accuracy": 0.525,
+      "delta_pp": 20.0,
+      "fixed": 14,
+      "broken": 6,
+      "both_correct": 7,
+      "both_wrong": 13,
+      "mcnemar_exact_p": 0.11531829833984375,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        40.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "name_index_en": {
+      "n": 40,
+      "baseline_correct": 11,
+      "baseline_accuracy": 0.275,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 72.5,
+      "fixed": 29,
+      "broken": 0,
+      "both_correct": 11,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 3.725290298461914e-09,
+      "bootstrap_ci_95_pp": [
+        57.49999999999999,
+        85.0
+      ],
+      "verdict": "improvement",
+      "near_ceiling": false
+    },
+    "name_index_ru": {
+      "n": 40,
+      "baseline_correct": 18,
+      "baseline_accuracy": 0.45,
+      "repeat_correct": 40,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 55.00000000000001,
+      "fixed": 22,
+      "broken": 0,
+      "both_correct": 18,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 4.76837158203125e-07,
+      "bootstrap_ci_95_pp": [
+        40.0,
+        70.0
+      ],
+      "verdict": "improvement",
+      "near_ceiling": false
+    },
+    "receipt_total_ru": {
+      "n": 12,
+      "baseline_correct": 0,
+      "baseline_accuracy": 0.0,
+      "repeat_correct": 0,
+      "repeat_accuracy": 0.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 0,
+      "both_wrong": 12,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": false
+    },
+    "spanish_mcq_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 12,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    }
+  },
+  "efficiency": {
+    "baseline": {
+      "n": 220,
+      "latency_ms_median": 470.52250000000004,
+      "latency_ms_mean": 471.05869545454544,
+      "latency_ms_p95": 585.002,
+      "input_tokens_total": 47234,
+      "input_tokens_mean": 214.7,
+      "output_tokens_total": 774,
+      "output_tokens_mean": 3.518181818181818,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 0,
+      "cost_usd_total": 0.005033,
+      "cost_usd_mean": 2.287727272727273e-05
+    },
+    "repeat_2": {
+      "n": 220,
+      "latency_ms_median": 467.648,
+      "latency_ms_mean": 488.07935,
+      "latency_ms_p95": 608.972,
+      "input_tokens_total": 94468,
+      "input_tokens_mean": 429.4,
+      "output_tokens_total": 993,
+      "output_tokens_mean": 4.513636363636364,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 0,
+      "cost_usd_total": 0.009844,
+      "cost_usd_mean": 4.4745454545454545e-05
+    },
+    "input_token_ratio": 2.0,
+    "latency_median_delta_pct": -0.6109165874108036,
+    "latency_median_delta_ms": -2.874500000000012,
+    "paired_latency_delta_ms_median": -2.011000000000024
+  },
+  "stability_pilot": {
+    "n_tasks": 20,
+    "disagreements": 0,
+    "disagreement_rate": 0.0,
+    "threshold": 0.05,
+    "repeats_recommended": 1,
+    "rows": [
+      {
+        "task_id": "name_index_ru_037",
+        "answer_1": "Зоя Орлова",
+        "answer_2": "Зоя Орлова",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_011",
+        "answer_1": "E16",
+        "answer_2": "E16",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_021",
+        "answer_1": "Алина Ковалёва",
+        "answer_2": "Алина Ковалёва",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_002",
+        "answer_1": "Елена Волкова",
+        "answer_2": "Елена Волкова",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_006",
+        "answer_1": "Андрей Сергеев",
+        "answer_2": "Андрей Сергеев",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_040",
+        "answer_1": "Екатерина Лебедева",
+        "answer_2": "Екатерина Лебедева",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_006",
+        "answer_1": "77.99",
+        "answer_2": "77.99",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_003",
+        "answer_1": "215",
+        "answer_2": "215",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_004",
+        "answer_1": "Даниил Степанов",
+        "answer_2": "Даниил Степанов",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_003",
+        "answer_1": "35.34",
+        "answer_2": "35.34",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_030",
+        "answer_1": "Benjamin Hall",
+        "answer_2": "Benjamin Hall",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_en_006",
+        "answer_1": "Christian Harris",
+        "answer_2": "Christian Harris",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_016",
+        "answer_1": "Дарья Максимова",
+        "answer_2": "Дарья Максимова",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_012",
+        "answer_1": "67.79",
+        "answer_2": "67.79",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_027",
+        "answer_1": "Anthony Reyes",
+        "answer_2": "Anthony Reyes",
+        "agree": true
+      },
+      {
+        "task_id": "name_index_ru_033",
+        "answer_1": "Фёдор Егоров",
+        "answer_2": "Фёдор Егоров",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_004",
+        "answer_1": "182",
+        "answer_2": "182",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_en_040",
+        "answer_1": "Nolan Morgan",
+        "answer_2": "Nolan Morgan",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_010",
+        "answer_1": "118.75",
+        "answer_2": "118.75",
+        "agree": true
+      },
+      {
+        "task_id": "middle_match_ru_005",
+        "answer_1": "Алина Антонова",
+        "answer_2": "Алина Антонова",
+        "agree": true
+      }
+    ]
+  },
+  "parse_errors": {
+    "baseline": 0,
+    "repeat_2": 4
+  },
+  "finish_reasons": {
+    "STOP": 436,
+    "MAX_TOKENS": 4
+  },
+  "spent_usd": 0.015835399999999993
+}

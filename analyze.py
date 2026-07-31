@@ -136,11 +136,12 @@ def make_charts(summary: dict, charts_dir: Path) -> None:
     suites = summary["by_suite"]
 
     # 1. accuracy by suite — full 0-100 axis, no truncation
+    present = [s for s in SUITES if suites[s]["n"]]  # an ablation may cover one suite only
     fig, ax = plt.subplots(figsize=(7.5, 4.6))
-    labels = [f"{s}\n(n={suites[s]['n']})" for s in SUITES]
-    xs = range(len(SUITES))
-    base = [100 * suites[s]["baseline_accuracy"] for s in SUITES]
-    rep = [100 * suites[s]["repeat_accuracy"] for s in SUITES]
+    labels = [f"{s}\n(n={suites[s]['n']})" for s in present]
+    xs = range(len(present))
+    base = [100 * suites[s]["baseline_accuracy"] for s in present]
+    rep = [100 * suites[s]["repeat_accuracy"] for s in present]
     ax.bar([x - 0.2 for x in xs], base, 0.4, label="baseline", color=BASE_COLOR)
     ax.bar([x + 0.2 for x in xs], rep, 0.4, label="repeat_2", color=REPEAT_COLOR)
     for x, (bv, rv) in enumerate(zip(base, rep)):
@@ -198,6 +199,48 @@ def format_ci(block: dict) -> str:
     return f"{lo:+.1f} … {hi:+.1f}"
 
 
+def fmt_p(p: float) -> str:
+    """Keeps very small p-values readable instead of rounding them to 0.0000."""
+    return f"{p:.2e}" if p < 1e-4 else f"{p:.4f}"
+
+
+def run_specific_limitations(rows: list[dict], summary: dict) -> str:
+    """Limitations that only the actual response log can reveal."""
+    truncated = [r for r in rows if r.get("phase") == "main" and r.get("finish_reason") == "MAX_TOKENS"]
+    lines = ["\n## Run-specific limitations\n"]
+    cap = summary["request_defaults"]["max_output_tokens"]
+    if truncated:
+        by_cond = Counter(r["condition"] for r in truncated)
+        by_suite = Counter(r["suite"] for r in truncated)
+        lines.append(
+            f"- `max_output_tokens = {cap}` truncated {len(truncated)} response(s) "
+            f"(by condition: {dict(by_cond)}; by suite: {dict(by_suite)}). Every truncated "
+            f"response began writing a step-by-step solution despite the prompt asking for a bare "
+            f"value, so it is scored as a format violation. Because the truncations are not evenly "
+            f"split across conditions, the affected suite's delta carries this artefact; see the "
+            f"separate output-cap sensitivity run if one was performed."
+        )
+    else:
+        lines.append(f"- `max_output_tokens = {cap}` truncated no responses.")
+    lines.append(
+        "- `gemini-2.0-flash-lite`, the model behind the widely quoted +76 pp NameIndex result, "
+        "was shut down by Google on 2026-06-01, so an exact replication of that number is no "
+        "longer possible on the Gemini API."
+    )
+    lines.append(
+        "- The Gemini `generateContent` API exposes no sampling seed, so bit-exact reproducibility "
+        "is not guaranteed even at `temperature = 0`. The stability pilot measured "
+        f"{100 * (summary['stability_pilot']['disagreement_rate'] if summary.get('stability_pilot') else 0):.1f}% "
+        "answer disagreement when baseline was sent twice."
+    )
+    lines.append(
+        f"- Prompt caching did not engage: {summary['efficiency']['baseline']['cached_input_tokens_total']} "
+        f"and {summary['efficiency']['repeat_2']['cached_input_tokens_total']} cached input tokens were "
+        "reported, so the input-token ratio is also the billed ratio."
+    )
+    return "\n".join(lines) + "\n"
+
+
 def category_table(summary: dict) -> str:
     head = ("| category | n | baseline | repeat_2 | delta pp | fixed | broken | McNemar p | 95% CI pp |\n"
             "|---|---|---|---|---|---|---|---|---|\n")
@@ -206,7 +249,7 @@ def category_table(summary: dict) -> str:
         lines.append(
             f"| {cat} | {m['n']} | {m['baseline_correct']} ({100 * m['baseline_accuracy']:.1f}%) | "
             f"{m['repeat_correct']} ({100 * m['repeat_accuracy']:.1f}%) | {m['delta_pp']:+.1f} | "
-            f"{m['fixed']} | {m['broken']} | {m['mcnemar_exact_p']:.4f} | {format_ci(m)} |"
+            f"{m['fixed']} | {m['broken']} | {fmt_p(m['mcnemar_exact_p'])} | {format_ci(m)} |"
         )
     return head + "\n".join(lines)
 
@@ -236,12 +279,21 @@ def efficiency_table(summary: dict) -> str:
 
 
 def example_lines(pairs: list[dict], kind: str, limit: int = 5) -> list[dict]:
+    """Spreads examples across categories so one category cannot fill the list."""
     if kind == "fixed":
         sel = [p for p in pairs if not p["baseline_correct"] and p["repeat_correct"]]
     else:
         sel = [p for p in pairs if p["baseline_correct"] and not p["repeat_correct"]]
-    sel.sort(key=lambda p: (p["suite"] != "stress", p["task_id"]))
-    return sel[:limit]
+    buckets: dict[str, list[dict]] = defaultdict(list)
+    for p in sorted(sel, key=lambda p: p["task_id"]):
+        buckets[p["category"]].append(p)
+    order = sorted(buckets, key=lambda c: (-len(buckets[c]), c))
+    out: list[dict] = []
+    while len(out) < limit and any(buckets[c] for c in order):
+        for c in order:
+            if buckets[c] and len(out) < limit:
+                out.append(buckets[c].pop(0))
+    return out
 
 
 def render_examples(items: list[dict]) -> str:
@@ -311,7 +363,12 @@ def main() -> int:
 
     # ---- report.md ----
     tpl = (ROOT / "templates" / "report.md").read_text()
-    st, pr = summary["by_suite"]["stress"], summary["by_suite"]["practical"]
+    empty = {"n": 0, "baseline_correct": 0, "baseline_accuracy": float("nan"), "repeat_correct": 0,
+             "repeat_accuracy": float("nan"), "delta_pp": float("nan"), "fixed": 0, "broken": 0,
+             "mcnemar_exact_p": 1.0, "bootstrap_ci_95_pp": [float("nan")] * 2,
+             "verdict": "unclear", "near_ceiling": False}
+    st = {**empty, **summary["by_suite"]["stress"]}
+    pr = {**empty, **summary["by_suite"]["practical"]}
     pilot = summary["stability_pilot"]
     stability = ("not run" if not pilot else
                  f"{pilot['n_tasks']} tasks, baseline sent twice: "
@@ -336,9 +393,9 @@ def main() -> int:
                    "(this is not evidence that the true effect is exactly zero)",
     }
     interpretation = (
-        f"- stress: delta {st['delta_pp']:+.1f} pp, McNemar p = {st['mcnemar_exact_p']:.4f}, "
+        f"- stress: delta {st['delta_pp']:+.1f} pp, McNemar p = {fmt_p(st['mcnemar_exact_p'])}, "
         f"CI {format_ci(st)} -> {verdict_text[st['verdict']]}\n"
-        f"- practical: delta {pr['delta_pp']:+.1f} pp, McNemar p = {pr['mcnemar_exact_p']:.4f}, "
+        f"- practical: delta {pr['delta_pp']:+.1f} pp, McNemar p = {fmt_p(pr['mcnemar_exact_p'])}, "
         f"CI {format_ci(pr)} -> {verdict_text[pr['verdict']]}\n"
     )
     if st["near_ceiling"]:
@@ -358,7 +415,7 @@ def main() -> int:
         "stress_repeat_correct": str(st["repeat_correct"]),
         "stress_repeat_accuracy": f"{100 * st['repeat_accuracy']:.1f}%",
         "stress_delta_pp": f"{st['delta_pp']:+.1f}", "stress_fixed": str(st["fixed"]),
-        "stress_broken": str(st["broken"]), "stress_mcnemar_p": f"{st['mcnemar_exact_p']:.4f}",
+        "stress_broken": str(st["broken"]), "stress_mcnemar_p": f"{fmt_p(st['mcnemar_exact_p'])}",
         "stress_ci_low": f"{st['bootstrap_ci_95_pp'][0]:+.1f}",
         "stress_ci_high": f"{st['bootstrap_ci_95_pp'][1]:+.1f}",
         "practical_n": str(pr["n"]), "practical_baseline_correct": str(pr["baseline_correct"]),
@@ -366,7 +423,7 @@ def main() -> int:
         "practical_repeat_correct": str(pr["repeat_correct"]),
         "practical_repeat_accuracy": f"{100 * pr['repeat_accuracy']:.1f}%",
         "practical_delta_pp": f"{pr['delta_pp']:+.1f}", "practical_fixed": str(pr["fixed"]),
-        "practical_broken": str(pr["broken"]), "practical_mcnemar_p": f"{pr['mcnemar_exact_p']:.4f}",
+        "practical_broken": str(pr["broken"]), "practical_mcnemar_p": f"{fmt_p(pr['mcnemar_exact_p'])}",
         "practical_ci_low": f"{pr['bootstrap_ci_95_pp'][0]:+.1f}",
         "practical_ci_high": f"{pr['bootstrap_ci_95_pp'][1]:+.1f}",
         "category_results": category_table(summary),
@@ -380,6 +437,7 @@ def main() -> int:
     report = tpl
     for k, v in values.items():
         report = report.replace("{{" + k + "}}", v)
+    report += run_specific_limitations(rows, summary)
     (out_dir / "report.md").write_text(report)
 
     # ---- failures.md ----
@@ -402,7 +460,8 @@ def main() -> int:
     print(json.dumps({s: {k: summary["by_suite"][s][k] for k in
                           ("n", "baseline_correct", "repeat_correct", "delta_pp", "fixed",
                            "broken", "mcnemar_exact_p", "bootstrap_ci_95_pp", "verdict")}
-                      for s in SUITES}, ensure_ascii=False, indent=2))
+                      for s in SUITES if summary["by_suite"][s]["n"]},
+                     ensure_ascii=False, indent=2))
     print("\nwrote:", out_dir / "summary.json", out_dir / "report.md", sep="\n  ")
     return 0
 
