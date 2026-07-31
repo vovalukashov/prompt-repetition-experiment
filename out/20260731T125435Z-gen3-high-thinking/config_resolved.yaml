@@ -1,0 +1,85 @@
+experiment:
+  seed: 20260731
+  preset: standard
+  repeats_per_condition: 1
+  warmup_requests: 5
+  concurrency: 1
+  request_timeout_seconds: 120
+  max_retries: 5
+  max_total_requests: 400
+  max_budget_usd: 1.0
+  bootstrap_resamples: 10000
+  stability_pilot_tasks: 20
+  conditions:
+  - baseline
+  - repeat_2
+  ablation:
+    suite: stress
+    tag: gen3-high-thinking
+    max_output_tokens: null
+request_defaults:
+  temperature: 0
+  max_output_tokens: 64
+  system_prompt: null
+  tools: disabled
+  web_search: disabled
+  response_format: text
+models:
+- label: gen3high
+  provider: google
+  api_style: gemini_generate_content
+  model_id: gemini-3.5-flash-lite
+  base_url: https://generativelanguage.googleapis.com/v1beta
+  api_key_env: GOOGLE_GENERATIVE_AI_API_KEY
+  reasoning_mode: high
+  reasoning_disable_method: not applicable; thinking deliberately enabled
+  reasoning_evidence_field: usageMetadata.thoughtsTokenCount
+  thinking_config:
+    thinkingLevel: high
+  request_overrides:
+    maxOutputTokens: 8192
+  pricing:
+    input_per_million_usd: 0.3
+    output_per_million_usd: 2.5
+    cached_input_per_million_usd: null
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    retrieved_utc: '2026-07-31'
+- label: primary
+  provider: google
+  api_style: gemini_generate_content
+  model_id: gemini-2.5-flash-lite
+  base_url: https://generativelanguage.googleapis.com/v1beta
+  api_key_env: GOOGLE_GENERATIVE_AI_API_KEY
+  reasoning_mode: disabled
+  reasoning_disable_method: generationConfig.thinkingConfig.thinkingBudget=0
+  reasoning_evidence_field: usageMetadata.thoughtsTokenCount
+  request_overrides: {}
+  pricing:
+    input_per_million_usd: 0.1
+    output_per_million_usd: 0.4
+    cached_input_per_million_usd: 0.025
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    retrieved_utc: '2026-07-31'
+- label: gen3
+  provider: google
+  api_style: gemini_generate_content
+  model_id: gemini-3.5-flash-lite
+  base_url: https://generativelanguage.googleapis.com/v1beta
+  api_key_env: GOOGLE_GENERATIVE_AI_API_KEY
+  reasoning_mode: minimal_not_disableable
+  reasoning_disable_method: not available; thinkingLevel floor is "minimal"
+  reasoning_evidence_field: usageMetadata.thoughtsTokenCount
+  thinking_config:
+    thinkingLevel: minimal
+  request_overrides: {}
+  pricing:
+    input_per_million_usd: 0.3
+    output_per_million_usd: 2.5
+    cached_input_per_million_usd: null
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    retrieved_utc: '2026-07-31'
+output:
+  root_dir: out
+  save_redacted_request_payloads: true
+  save_raw_responses: true
+  make_charts: true

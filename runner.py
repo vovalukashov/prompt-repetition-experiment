@@ -337,6 +337,8 @@ def main() -> int:
                     help=f"comma-separated subset of {','.join(CONDITIONS)}")
     ap.add_argument("--model", default=None, help="label of the model entry in config.yaml")
     ap.add_argument("--max-requests", type=int, default=None, help="override the runaway guard")
+    ap.add_argument("--repeats", type=int, default=None,
+                    help="pin repeats_per_condition instead of letting the pilot choose")
     args = ap.parse_args()
 
     conditions = [c.strip() for c in args.conditions.split(",") if c.strip()]
@@ -400,8 +402,11 @@ def main() -> int:
         print(f"  disagreement: {pilot['disagreements']}/{pilot['n_tasks']} "
               f"= {pilot['disagreement_rate']:.1%}")
         repeats = pilot["repeats_recommended"]
-        cfg["experiment"]["repeats_per_condition"] = repeats
         print(f"  -> repeats_per_condition = {repeats}")
+    if args.repeats:
+        repeats = args.repeats
+        print(f"  pinned by --repeats: repeats_per_condition = {repeats}")
+    cfg["experiment"]["repeats_per_condition"] = repeats
 
     meta = {
         "run_started_utc": utc_now(),
