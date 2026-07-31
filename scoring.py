@@ -48,6 +48,28 @@ def build_repeat_prompt(prompt: str) -> str:
     return p + "\n\n" + p
 
 
+# Section 14 ablation. The spec writes the marker in Russian; using a Russian
+# marker on an English prompt would mix a language switch into the comparison,
+# so the marker follows the prompt's own language.
+VERBOSE_MARKERS = {"ru": "Повторяю:", "en": "Let me repeat that:"}
+
+CONDITIONS = ("baseline", "repeat_2", "repeat_3", "repeat_verbose")
+
+
+def build_condition_prompt(prompt: str, condition: str, language: str) -> str:
+    p = prompt.rstrip()
+    if condition == "baseline":
+        return p
+    if condition == "repeat_2":
+        return p + "\n\n" + p
+    if condition == "repeat_3":
+        return p + "\n\n" + p + "\n\n" + p
+    if condition == "repeat_verbose":
+        marker = VERBOSE_MARKERS.get(language, VERBOSE_MARKERS["en"])
+        return p + "\n\n" + marker + "\n" + p
+    raise ValueError(f"unknown condition: {condition}")
+
+
 @dataclass(frozen=True)
 class ScoreResult:
     parsed_answer: str | None

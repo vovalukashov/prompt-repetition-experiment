@@ -20,7 +20,7 @@ from pathlib import Path
 import httpx
 import yaml
 
-from scoring import build_repeat_prompt, score
+from scoring import CONDITIONS, build_condition_prompt, score
 
 ROOT = Path(__file__).resolve().parent
 RETRYABLE_STATUS = {408, 409, 429}
@@ -80,7 +80,12 @@ class GeminiAdapter:
             "maxOutputTokens": self.defaults["max_output_tokens"],
             "candidateCount": 1,
         }
-        if self.cfg.get("reasoning_mode") == "disabled":
+        # 2.5 Flash-Lite takes thinkingBudget=0; 3.x rejects it and has no "off"
+        # level, so the strongest available setting there is thinkingLevel=minimal.
+        thinking = self.cfg.get("thinking_config")
+        if thinking:
+            generation_config["thinkingConfig"] = dict(thinking)
+        elif self.cfg.get("reasoning_mode") == "disabled":
             generation_config["thinkingConfig"] = {"thinkingBudget": 0}
         generation_config.update(self.cfg.get("request_overrides", {}))
         # No systemInstruction, no tools: the user turn is the entire request.
@@ -203,9 +208,8 @@ class Runner:
                 "error": attempts[-1]["error"] or f"HTTP {attempts[-1]['http_status']}"}
 
     def execute(self, task: dict, condition: str, pair_order: str, repeat_index: int,
-                phase: str) -> dict:
-        prompt = task["prompt"].rstrip()
-        user_content = prompt if condition == "baseline" else build_repeat_prompt(prompt)
+                phase: str, condition_order: list[str] | None = None) -> dict:
+        user_content = build_condition_prompt(task["prompt"], condition, task["language"])
         result = self.request_with_retries(user_content)
         body = result["body"] or {}
         text = self.adapter.extract_text(body) if result["ok"] else None
@@ -233,6 +237,7 @@ class Runner:
             "reasoning_mode": self.model_cfg.get("reasoning_mode"),
             "condition": condition,
             "pair_order": pair_order,
+            "condition_order": condition_order,
             "repeat_index": repeat_index,
             "prompt_sha256": hashlib.sha256(user_content.encode("utf-8")).hexdigest(),
             "request_payload_redacted": self.adapter.redacted(result["payload"]),
@@ -287,19 +292,25 @@ class Runner:
                 "disagreement_rate": rate, "threshold": 0.05,
                 "repeats_recommended": 3 if rate > 0.05 else 1, "rows": rows}
 
-    def main_run(self, tasks: list[dict], repeats: int) -> None:
+    def main_run(self, tasks: list[dict], repeats: int, conditions: list[str]) -> None:
         order_rng = random.Random(self.exp["seed"])
         shuffled = tasks[:]
         order_rng.shuffle(shuffled)
-        plan = [(t, "AB" if order_rng.random() < 0.5 else "BA") for t in shuffled]
-        total = len(plan) * 2 * repeats
+        # Each task gets its own condition order so position in the sequence cannot
+        # be confounded with the condition.
+        plan = []
+        for task in shuffled:
+            order = conditions[:]
+            order_rng.shuffle(order)
+            plan.append((task, order))
+        total = len(plan) * len(conditions) * repeats
         done = 0
         t0 = time.monotonic()
-        for task, pair_order in plan:
+        for task, order in plan:
+            pair_order = "AB" if order.index("baseline") == 0 else "BA"
             for repeat_index in range(1, repeats + 1):
-                conditions = ("baseline", "repeat_2") if pair_order == "AB" else ("repeat_2", "baseline")
-                for condition in conditions:
-                    row = self.execute(task, condition, pair_order, repeat_index, "main")
+                for condition in order:
+                    row = self.execute(task, condition, pair_order, repeat_index, "main", order)
                     done += 1
                     if done % 20 == 0 or done == total:
                         elapsed = time.monotonic() - t0
@@ -322,12 +333,29 @@ def main() -> int:
     ap.add_argument("--max-output-tokens", type=int, default=None,
                     help="ablation: override the output cap")
     ap.add_argument("--tag", default=None, help="suffix for the output directory name")
+    ap.add_argument("--conditions", default="baseline,repeat_2",
+                    help=f"comma-separated subset of {','.join(CONDITIONS)}")
+    ap.add_argument("--model", default=None, help="label of the model entry in config.yaml")
+    ap.add_argument("--max-requests", type=int, default=None, help="override the runaway guard")
     args = ap.parse_args()
+
+    conditions = [c.strip() for c in args.conditions.split(",") if c.strip()]
+    unknown = [c for c in conditions if c not in CONDITIONS]
+    if unknown or "baseline" not in conditions:
+        raise SystemExit(f"invalid --conditions {conditions}: unknown={unknown}, baseline required")
 
     load_dotenv(ROOT / ".env")
     cfg = yaml.safe_load((ROOT / args.config).read_text())
     if args.preset:
         cfg["experiment"]["preset"] = args.preset
+    if args.max_requests:
+        cfg["experiment"]["max_total_requests"] = args.max_requests
+    if args.model:
+        chosen = [m for m in cfg["models"] if m["label"] == args.model]
+        if not chosen:
+            raise SystemExit(f"no model labelled {args.model!r} in {args.config}")
+        cfg["models"] = chosen + [m for m in cfg["models"] if m["label"] != args.model]
+    cfg["experiment"]["conditions"] = conditions
     preset = cfg["experiment"]["preset"]
 
     if args.max_output_tokens:
@@ -392,9 +420,10 @@ def main() -> int:
         (out_dir / "run_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2))
         return 0
 
-    print(f"main run: {len(tasks)} tasks x 2 conditions x {repeats} repeat(s)", flush=True)
+    print(f"main run: {len(tasks)} tasks x {len(conditions)} conditions "
+          f"({', '.join(conditions)}) x {repeats} repeat(s)", flush=True)
     try:
-        runner.main_run(tasks, repeats)
+        runner.main_run(tasks, repeats, conditions)
     finally:
         meta["run_finished_utc"] = utc_now()
         meta["requests_made"] = runner.requests_made

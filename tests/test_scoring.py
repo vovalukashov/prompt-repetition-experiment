@@ -10,6 +10,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scoring import (  # noqa: E402
+    build_condition_prompt,
     build_repeat_prompt,
     exact_mcnemar_p,
     normalize,
@@ -153,6 +154,44 @@ def test_repeat_prompt_is_exactly_two_copies_joined_by_a_blank_line():
     out = build_repeat_prompt(p)
     assert out == "Question?\n\nQuestion?"
     assert out.count("Question?") == 2
+
+
+def test_baseline_condition_is_the_untouched_prompt():
+    assert build_condition_prompt("Question?  \n", "baseline", "en") == "Question?"
+
+
+def test_repeat_2_condition_matches_the_primary_builder():
+    p = "Вопрос?"
+    assert build_condition_prompt(p, "repeat_2", "ru") == build_repeat_prompt(p)
+
+
+def test_repeat_3_is_three_exact_copies_and_adds_no_other_tokens():
+    out = build_condition_prompt("Question?", "repeat_3", "en")
+    assert out == "Question?\n\nQuestion?\n\nQuestion?"
+    assert out.count("Question?") == 3
+
+
+def test_repeat_verbose_inserts_a_russian_marker_for_russian_prompts():
+    out = build_condition_prompt("Вопрос?", "repeat_verbose", "ru")
+    assert out == "Вопрос?\n\nПовторяю:\nВопрос?"
+
+
+def test_repeat_verbose_inserts_an_english_marker_for_english_prompts():
+    # a Russian marker on an English prompt would confound language with verbosity
+    out = build_condition_prompt("Question?", "repeat_verbose", "en")
+    assert out == "Question?\n\nLet me repeat that:\nQuestion?"
+
+
+def test_every_repeat_condition_preserves_the_prompt_verbatim():
+    p = "Списки: A, B, C.\n\nЧто третье? Ответь одним словом."
+    for cond in ("repeat_2", "repeat_3", "repeat_verbose"):
+        out = build_condition_prompt(p, cond, "ru")
+        assert out.startswith(p) and out.endswith(p)
+
+
+def test_unknown_condition_is_rejected():
+    with pytest.raises(ValueError):
+        build_condition_prompt("Question?", "repeat_17", "en")
 
 
 # --- exact McNemar ---------------------------------------------------------

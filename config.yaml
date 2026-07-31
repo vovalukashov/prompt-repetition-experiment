@@ -37,6 +37,30 @@ models:
       source: https://ai.google.dev/gemini-api/docs/pricing
       retrieved_utc: '2026-07-31'
 
+  # Reasoning CANNOT be switched off on this generation: the API rejects
+  # thinkingBudget with 400 INVALID_ARGUMENT and thinkingLevel has no "off"
+  # value (verified 2026-07-31). "minimal" is the floor, so this run is not a
+  # strict replication of the paper's non-reasoning setting and is labelled
+  # accordingly.
+  - label: gen3
+    provider: google
+    api_style: gemini_generate_content
+    model_id: gemini-3.5-flash-lite
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    api_key_env: GOOGLE_GENERATIVE_AI_API_KEY
+    reasoning_mode: minimal_not_disableable
+    reasoning_disable_method: not available; thinkingLevel floor is "minimal"
+    reasoning_evidence_field: usageMetadata.thoughtsTokenCount
+    thinking_config:
+      thinkingLevel: minimal
+    request_overrides: {}
+    pricing:
+      input_per_million_usd: 0.30
+      output_per_million_usd: 2.50
+      cached_input_per_million_usd: null
+      source: https://ai.google.dev/gemini-api/docs/pricing
+      retrieved_utc: '2026-07-31'
+
 output:
   root_dir: out
   save_redacted_request_payloads: true

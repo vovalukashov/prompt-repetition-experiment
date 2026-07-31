@@ -131,6 +131,39 @@ def efficiency(rows: list[dict]) -> dict:
     return out
 
 
+def repeats_analysis(rows: list[dict]) -> dict | None:
+    """Section 7: with more than one response per condition, report all-response
+    accuracy and how often the repeats disagree, not just the majority vote."""
+    main = [r for r in rows if r.get("phase") == "main"]
+    if not main or max(r["repeat_index"] for r in main) < 2:
+        return None
+    out = {}
+    for cond in ("baseline", "repeat_2"):
+        sel = [r for r in main if r["condition"] == cond]
+        if not sel:
+            continue
+        by_task: dict[str, list[dict]] = defaultdict(list)
+        for r in sel:
+            by_task[r["task_id"]].append(r)
+        unanimous_answer = sum(1 for v in by_task.values()
+                               if len({x["parsed_answer"] for x in v}) == 1)
+        unanimous_correct = sum(1 for v in by_task.values()
+                                if len({x["correct"] for x in v}) == 1)
+        flips = sum(1 for v in by_task.values() if len({x["correct"] for x in v}) > 1)
+        out[cond] = {
+            "responses": len(sel),
+            "tasks": len(by_task),
+            "correct_responses": sum(1 for r in sel if r["correct"]),
+            "accuracy_all_responses": sum(1 for r in sel if r["correct"]) / len(sel),
+            "tasks_with_identical_answers": unanimous_answer,
+            "answer_agreement_rate": unanimous_answer / len(by_task),
+            "tasks_with_identical_correctness": unanimous_correct,
+            "tasks_flipping_correctness": flips,
+            "correctness_flip_rate": flips / len(by_task),
+        }
+    return out
+
+
 def make_charts(summary: dict, charts_dir: Path) -> None:
     cats = summary["by_category"]
     suites = summary["by_suite"]
@@ -348,6 +381,7 @@ def main() -> int:
         "by_category": {c: block_metrics([p for p in pairs if p["category"] == c], resamples, seed)
                         for c in sorted({p["category"] for p in pairs})},
         "efficiency": efficiency(rows),
+        "repeats_analysis": repeats_analysis(rows),
         "stability_pilot": meta.get("stability_pilot"),
         "parse_errors": {
             cond: sum(1 for r in rows if r.get("phase") == "main"
@@ -374,6 +408,21 @@ def main() -> int:
                  f"{pilot['n_tasks']} tasks, baseline sent twice: "
                  f"{pilot['disagreements']} disagreement(s) = {100 * pilot['disagreement_rate']:.1f}% "
                  f"(threshold 5%) -> repeats_per_condition = {pilot['repeats_recommended']}")
+    ra = summary.get("repeats_analysis")
+    if ra:
+        stability += (
+            f"\n\nWith {summary['repeats_per_condition']} responses per condition, the headline "
+            f"numbers above use the per-task majority vote. All-response accuracy and repeat "
+            f"variability:\n\n"
+            + "\n".join(
+                f"- `{cond}`: {d['correct_responses']}/{d['responses']} responses correct "
+                f"({100 * d['accuracy_all_responses']:.1f}%); "
+                f"{d['tasks_with_identical_answers']}/{d['tasks']} tasks "
+                f"({100 * d['answer_agreement_rate']:.1f}%) returned the identical answer every "
+                f"time; {d['tasks_flipping_correctness']} tasks "
+                f"({100 * d['correctness_flip_rate']:.1f}%) flipped between correct and wrong "
+                f"across repeats"
+                for cond, d in ra.items()))
     failures = [r for r in rows if r.get("error")]
     parse_err = [r for r in rows if r.get("phase") == "main" and r.get("parse_error")]
     failure_summary = (
