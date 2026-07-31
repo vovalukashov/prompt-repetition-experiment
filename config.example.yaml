@@ -1,0 +1,39 @@
+experiment:
+  seed: 20260731
+  preset: standard            # quick | standard
+  repeats_per_condition: 1    # stability pilot may raise this to 3
+  warmup_requests: 5
+  concurrency: 1
+  request_timeout_seconds: 120
+  max_retries: 5
+  max_total_requests: 500
+  max_budget_usd: null        # set a hard cap, e.g. 5.0
+  bootstrap_resamples: 10000
+
+request_defaults:
+  temperature: 0
+  max_output_tokens: 64
+  system_prompt: null
+  tools: disabled
+  web_search: disabled
+  response_format: text
+
+models:
+  - label: primary
+    provider: REPLACE_ME
+    api_style: REPLACE_ME
+    model_id: REPLACE_ME
+    base_url: REPLACE_ME
+    api_key_env: LLM_API_KEY
+    reasoning_mode: disabled
+    request_overrides: {}
+    pricing:
+      input_per_million_usd: null
+      output_per_million_usd: null
+      cached_input_per_million_usd: null
+
+output:
+  root_dir: out
+  save_redacted_request_payloads: true
+  save_raw_responses: true
+  make_charts: true

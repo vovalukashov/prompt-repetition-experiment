@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prompt repetition summary",
+  "type": "object",
+  "required": [
+    "run_metadata",
+    "suites",
+    "categories",
+    "efficiency",
+    "limitations"
+  ],
+  "properties": {
+    "run_metadata": {
+      "type": "object"
+    },
+    "suites": {
+      "type": "object"
+    },
+    "categories": {
+      "type": "object"
+    },
+    "efficiency": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

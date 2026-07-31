@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prompt repetition raw run",
+  "type": "object",
+  "required": [
+    "run_id",
+    "timestamp_utc",
+    "task_id",
+    "suite",
+    "category",
+    "provider",
+    "model_id",
+    "condition",
+    "response_text",
+    "expected",
+    "correct",
+    "latency_ms"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "timestamp_utc": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "suite": {
+      "enum": [
+        "stress",
+        "practical"
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "model_id": {
+      "type": "string"
+    },
+    "reasoning_mode": {
+      "type": "string"
+    },
+    "condition": {
+      "enum": [
+        "baseline",
+        "repeat_2"
+      ]
+    },
+    "pair_order": {
+      "enum": [
+        "AB",
+        "BA"
+      ]
+    },
+    "repeat_index": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "prompt_sha256": {
+      "type": "string"
+    },
+    "request_payload_redacted": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "response_text": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parsed_answer": {
+      "type": [
+        "string",
+        "number",
+        "null"
+      ]
+    },
+    "expected": {
+      "type": [
+        "string",
+        "number"
+      ]
+    },
+    "correct": {
+      "type": "boolean"
+    },
+    "parse_error": {
+      "type": "boolean"
+    },
+    "latency_ms": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "output_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "cached_input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "cost_usd": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "http_status": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
