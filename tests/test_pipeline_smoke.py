@@ -1,4 +1,4 @@
-"""End-to-end smoke test of analyze.py + make_post.py on a synthetic run.
+"""End-to-end smoke test of analyze.py on a synthetic run.
 
 Exercises the whole artifact pipeline without spending a single API request, so
 a formatting bug cannot surface only after the paid run.
@@ -68,9 +68,9 @@ def synth_run(out_dir: Path, stress_delta: int, practical_delta: int) -> None:
 
 
 def run_pipeline(out_dir: Path) -> None:
-    for cmd in (["analyze.py", str(out_dir)], ["make_post.py", str(out_dir)]):
-        proc = subprocess.run([PY, str(ROOT / cmd[0]), *cmd[1:]], capture_output=True, text=True, cwd=ROOT)
-        assert proc.returncode == 0, f"{cmd[0]} failed:\n{proc.stdout}\n{proc.stderr}"
+    proc = subprocess.run([PY, str(ROOT / "analyze.py"), str(out_dir)],
+                          capture_output=True, text=True, cwd=ROOT)
+    assert proc.returncode == 0, f"analyze.py failed:\n{proc.stdout}\n{proc.stderr}"
 
 
 @pytest.mark.parametrize("stress_delta,practical_delta", [(30, 2), (-12, 0), (0, 0)])
@@ -78,19 +78,18 @@ def test_pipeline_produces_every_artifact(tmp_path, stress_delta, practical_delt
     out = tmp_path / "run"
     synth_run(out, stress_delta, practical_delta)
     run_pipeline(out)
-    for name in ("summary.json", "report.md", "failures.md", "telegram_post_final.md",
+    for name in ("summary.json", "report.md", "failures.md",
                  "charts/accuracy_by_suite.png", "charts/fixed_vs_broken.png",
                  "charts/latency_and_tokens.png"):
         assert (out / name).exists(), f"missing artifact: {name}"
 
 
-def test_no_placeholders_survive_in_report_or_post(tmp_path):
+def test_no_placeholders_survive_in_report(tmp_path):
     out = tmp_path / "run"
     synth_run(out, 30, 2)
     run_pipeline(out)
-    for name in ("report.md", "telegram_post_final.md"):
-        text = (out / name).read_text()
-        assert "{{" not in text and "}}" not in text, f"{name} still has placeholders"
+    text = (out / "report.md").read_text()
+    assert "{{" not in text and "}}" not in text, "report.md still has placeholders"
 
 
 def test_summary_pairs_every_task_and_matches_raw_counts(tmp_path):
@@ -131,9 +130,3 @@ def test_zero_effect_is_reported_as_unclear(tmp_path):
     assert summary["by_suite"]["stress"]["verdict"] == "unclear"
 
 
-def test_post_length_is_within_the_telegram_guideline(tmp_path):
-    out = tmp_path / "run"
-    synth_run(out, 30, 2)
-    run_pipeline(out)
-    n = len((out / "telegram_post_final.md").read_text())
-    assert 2500 <= n <= 4000, f"post is {n} characters, outside 2500-4000"

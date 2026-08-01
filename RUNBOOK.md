@@ -1,7 +1,9 @@
 # Runbook
 
-Как воспроизвести прогон. Файлы исходного бандла не изменялись — их целостность
-проверяется через `shasum -a 256 -c SHA256SUMS.txt`.
+Как воспроизвести прогон. Датасет и вспомогательные файлы заморожены — их
+целостность проверяется через `shasum -a 256 -c SHA256SUMS.txt`; ключевой
+якорь воспроизводимости — SHA-256 датасета, он продублирован в
+`out/<STAMP>/dataset.sha256` каждого прогона.
 
 ## Установка
 
@@ -32,7 +34,6 @@ shasum -a 256 -c SHA256SUMS.txt
 .venv/bin/python runner.py --probe          # один запрос, показать сырой ответ
 .venv/bin/python runner.py                  # warm-up + stability pilot + основной A/B
 .venv/bin/python analyze.py out/<STAMP>     # метрики, графики, report.md, failures.md
-.venv/bin/python make_post.py out/<STAMP>   # telegram_post_final.md
 ```
 
 Абляции и вторая модель:

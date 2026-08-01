@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Recomputes every metric from raw_runs.jsonl and writes the run's artifacts.
 
-Nothing here reads the network: summary.json, report.md, the charts, failures.md
-and telegram_post_final.md are all derived from the raw request log.
+Nothing here reads the network: summary.json, report.md, the charts and
+failures.md are all derived from the raw request log.
 """
 from __future__ import annotations
 
