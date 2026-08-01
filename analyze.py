@@ -11,6 +11,7 @@ import json
 import re
 import statistics
 import sys
+from decimal import Decimal, ROUND_HALF_UP
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -26,8 +27,24 @@ SUITES = ("stress", "practical")
 BASE_COLOR, REPEAT_COLOR = "#6b7280", "#2563eb"
 
 
+def round_half_up(x: float, digits: int = 1) -> float:
+    """Python rounds halves to even, so 36.25 would print as 36.2 in one place and
+    36.3 in another. Every reported figure goes through this instead."""
+    q = Decimal(1).scaleb(-digits)
+    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+
+
+def pct(x: float, digits: int = 1) -> str:
+    return f"{round_half_up(x, digits):.{digits}f}"
+
+
+def signed(x: float, digits: int = 1) -> str:
+    return f"{round_half_up(x, digits):+.{digits}f}"
+
+
 def ru(x: float, digits: int = 1, sign: bool = False) -> str:
-    s = f"{x:+.{digits}f}" if sign else f"{x:.{digits}f}"
+    v = round_half_up(x, digits)
+    s = f"{v:+.{digits}f}" if sign else f"{v:.{digits}f}"
     return s.replace(".", ",")
 
 
@@ -229,7 +246,7 @@ def make_charts(summary: dict, charts_dir: Path) -> None:
 
 def format_ci(block: dict) -> str:
     lo, hi = block["bootstrap_ci_95_pp"]
-    return f"{lo:+.1f} … {hi:+.1f}"
+    return f"{signed(lo)} … {signed(hi)}"
 
 
 def fmt_p(p: float) -> str:
@@ -280,8 +297,8 @@ def category_table(summary: dict) -> str:
     lines = []
     for cat, m in summary["by_category"].items():
         lines.append(
-            f"| {cat} | {m['n']} | {m['baseline_correct']} ({100 * m['baseline_accuracy']:.1f}%) | "
-            f"{m['repeat_correct']} ({100 * m['repeat_accuracy']:.1f}%) | {m['delta_pp']:+.1f} | "
+            f"| {cat} | {m['n']} | {m['baseline_correct']} ({pct(100 * m['baseline_accuracy'])}%) | "
+            f"{m['repeat_correct']} ({pct(100 * m['repeat_accuracy'])}%) | {signed(m['delta_pp'])} | "
             f"{m['fixed']} | {m['broken']} | {fmt_p(m['mcnemar_exact_p'])} | {format_ci(m)} |"
         )
     return head + "\n".join(lines)
@@ -442,9 +459,9 @@ def main() -> int:
                    "(this is not evidence that the true effect is exactly zero)",
     }
     interpretation = (
-        f"- stress: delta {st['delta_pp']:+.1f} pp, McNemar p = {fmt_p(st['mcnemar_exact_p'])}, "
+        f"- stress: delta {signed(st['delta_pp'])} pp, McNemar p = {fmt_p(st['mcnemar_exact_p'])}, "
         f"CI {format_ci(st)} -> {verdict_text[st['verdict']]}\n"
-        f"- practical: delta {pr['delta_pp']:+.1f} pp, McNemar p = {fmt_p(pr['mcnemar_exact_p'])}, "
+        f"- practical: delta {signed(pr['delta_pp'])} pp, McNemar p = {fmt_p(pr['mcnemar_exact_p'])}, "
         f"CI {format_ci(pr)} -> {verdict_text[pr['verdict']]}\n"
     )
     if st["near_ceiling"]:
@@ -460,21 +477,21 @@ def main() -> int:
         "successful_requests": str(summary["requests_total"] - summary["requests_failed"]),
         "failed_requests": str(summary["requests_failed"]),
         "stress_n": str(st["n"]), "stress_baseline_correct": str(st["baseline_correct"]),
-        "stress_baseline_accuracy": f"{100 * st['baseline_accuracy']:.1f}%",
+        "stress_baseline_accuracy": f"{pct(100 * st['baseline_accuracy'])}%",
         "stress_repeat_correct": str(st["repeat_correct"]),
-        "stress_repeat_accuracy": f"{100 * st['repeat_accuracy']:.1f}%",
-        "stress_delta_pp": f"{st['delta_pp']:+.1f}", "stress_fixed": str(st["fixed"]),
+        "stress_repeat_accuracy": f"{pct(100 * st['repeat_accuracy'])}%",
+        "stress_delta_pp": f"{signed(st['delta_pp'])}", "stress_fixed": str(st["fixed"]),
         "stress_broken": str(st["broken"]), "stress_mcnemar_p": f"{fmt_p(st['mcnemar_exact_p'])}",
-        "stress_ci_low": f"{st['bootstrap_ci_95_pp'][0]:+.1f}",
-        "stress_ci_high": f"{st['bootstrap_ci_95_pp'][1]:+.1f}",
+        "stress_ci_low": f"{signed(st['bootstrap_ci_95_pp'][0])}",
+        "stress_ci_high": f"{signed(st['bootstrap_ci_95_pp'][1])}",
         "practical_n": str(pr["n"]), "practical_baseline_correct": str(pr["baseline_correct"]),
-        "practical_baseline_accuracy": f"{100 * pr['baseline_accuracy']:.1f}%",
+        "practical_baseline_accuracy": f"{pct(100 * pr['baseline_accuracy'])}%",
         "practical_repeat_correct": str(pr["repeat_correct"]),
-        "practical_repeat_accuracy": f"{100 * pr['repeat_accuracy']:.1f}%",
-        "practical_delta_pp": f"{pr['delta_pp']:+.1f}", "practical_fixed": str(pr["fixed"]),
+        "practical_repeat_accuracy": f"{pct(100 * pr['repeat_accuracy'])}%",
+        "practical_delta_pp": f"{signed(pr['delta_pp'])}", "practical_fixed": str(pr["fixed"]),
         "practical_broken": str(pr["broken"]), "practical_mcnemar_p": f"{fmt_p(pr['mcnemar_exact_p'])}",
-        "practical_ci_low": f"{pr['bootstrap_ci_95_pp'][0]:+.1f}",
-        "practical_ci_high": f"{pr['bootstrap_ci_95_pp'][1]:+.1f}",
+        "practical_ci_low": f"{signed(pr['bootstrap_ci_95_pp'][0])}",
+        "practical_ci_high": f"{signed(pr['bootstrap_ci_95_pp'][1])}",
         "category_results": category_table(summary),
         "efficiency_results": efficiency_table(summary),
         "correction_examples": render_examples(example_lines(pairs, "fixed")),

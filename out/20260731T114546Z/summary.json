@@ -286,6 +286,7 @@
     "latency_median_delta_ms": -2.874500000000012,
     "paired_latency_delta_ms_median": -2.011000000000024
   },
+  "repeats_analysis": null,
   "stability_pilot": {
     "n_tasks": 20,
     "disagreements": 0,

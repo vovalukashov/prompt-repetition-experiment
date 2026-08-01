@@ -15,7 +15,7 @@
 ### Stress suite
 
 - n: 160
-- baseline: 58 / 160 = 36.2%
+- baseline: 58 / 160 = 36.3%
 - repeat_2: 120 / 160 = 75.0%
 - delta: +38.8 percentage points
 - fixed / broken: 73 / 11

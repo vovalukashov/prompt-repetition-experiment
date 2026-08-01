@@ -17,7 +17,7 @@
 - n: 160
 - baseline: 78 / 160 = 48.8%
 - repeat_2: 136 / 160 = 85.0%
-- delta: +36.2 percentage points
+- delta: +36.3 percentage points
 - fixed / broken: 61 / 3
 - exact McNemar p: 4.74e-15
 - paired-bootstrap 95% CI: +28.1 to +44.4 pp
@@ -102,7 +102,7 @@ With 3 responses per condition, the headline numbers above use the per-task majo
 
 ## Interpretation
 
-- stress: delta +36.2 pp, McNemar p = 4.74e-15, CI +28.1 … +44.4 -> repeat_2 is better; McNemar p < 0.05 and the bootstrap CI excludes 0
+- stress: delta +36.3 pp, McNemar p = 4.74e-15, CI +28.1 … +44.4 -> repeat_2 is better; McNemar p < 0.05 and the bootstrap CI excludes 0
 - practical: delta +5.0 pp, McNemar p = 0.4531, CI -3.3 … +13.3 -> no statistically clear effect on this model and dataset (this is not evidence that the true effect is exactly zero)
 
 

@@ -194,6 +194,7 @@
     "latency_median_delta_ms": 0.5659999999999741,
     "paired_latency_delta_ms_median": 1.6465000000000032
   },
+  "repeats_analysis": null,
   "stability_pilot": null,
   "parse_errors": {
     "baseline": 0,
