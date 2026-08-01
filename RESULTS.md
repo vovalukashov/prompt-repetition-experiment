@@ -5,15 +5,17 @@
 после первого платного запроса не менялся. Ответы оценивались кодом по
 `expected`, без LLM-as-a-judge. Дата всех прогонов — 2026-07-31 UTC.
 
-| # | прогон | модель | reasoning | условия | запросов | стоимость |
+| # | прогон | модель | reasoning | условия | логов запросов | стоимость |
 |---|---|---|---|---|---|---|
 | 1 | primary | `gemini-2.5-flash-lite` | выключен | baseline, repeat_2 | 480 | $0.016 |
-| 2 | output-cap sensitivity | `gemini-2.5-flash-lite` | выключен | baseline, repeat_2 (practical, cap 512) | 126 | $0.003 |
-| 3 | ablations | `gemini-2.5-flash-lite` | выключен | + repeat_3, repeat_verbose | 886 | $0.039 |
+| 2 | output-cap sensitivity | `gemini-2.5-flash-lite` | выключен | baseline, repeat_2 (practical, cap 512) | 120 | $0.003 |
+| 3 | ablations | `gemini-2.5-flash-lite` | выключен | + repeat_3, repeat_verbose | 880 | $0.039 |
 | 4 | gen3 | `gemini-3.5-flash-lite` | `minimal` (выключить нельзя) | baseline, repeat_2 | 1360 | $0.142 |
-| 5 | gen3 high | `gemini-3.5-flash-lite` | `high` | baseline, repeat_2 (stress) | 365 | $0.966 |
+| 5 | gen3 high | `gemini-3.5-flash-lite` | `high` | baseline, repeat_2 (stress) | 360 | $0.966 |
 
-Итого 3 217 запросов, $1.17.
+Итого 3 200 залогированных запросов в пяти зачтённых прогонах, $1.17
+(сверх того — по 5 warm-up на прогон и одна оборванная попытка прогона 4,
+сохранённая как `out/*-ABORTED-request-cap`).
 
 ## Главный результат
 
@@ -60,7 +62,8 @@
 ## Что нашлось помимо точности
 
 **3.5-flash-lite на `minimal` недетерминирована.** Stability pilot дал 8
-расхождений из 20 (35%) при `temperature = 0` на идентичных запросах, поэтому
+расхождений из 20 (40%; в оборванной первой попытке — 7 из 20) при
+`temperature = 0` на идентичных запросах, поэтому
 прогон 4 шёл в три ответа на условие с мажоритарным голосованием по задаче.
 Для сравнения: у 2.5-flash-lite — 0 из 20, у 3.5 на `high` — тоже 0 из 20.
 Недетерминизм живёт именно на минимальном уровне рассуждения.
