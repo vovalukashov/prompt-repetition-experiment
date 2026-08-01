@@ -1,0 +1,335 @@
+{
+  "run_started_utc": "2026-08-01T11:33:34.095Z",
+  "run_finished_utc": "2026-08-01T11:38:32.128Z",
+  "provider": "google",
+  "model_id": "gemini-3.5-flash-lite",
+  "model_version_reported": "gemini-3.5-flash-lite",
+  "reasoning_mode": "high",
+  "reasoning_disable_method": "not applicable; thinking deliberately enabled",
+  "preset": "standard",
+  "dataset_sha256": "ffbe5c9aa5708b3abab695a3ac40d4829d7c83fce0541684264f9623e997384c",
+  "repeats_per_condition": 1,
+  "request_defaults": {
+    "temperature": 0,
+    "max_output_tokens": 64,
+    "system_prompt": null,
+    "tools": "disabled",
+    "web_search": "disabled",
+    "response_format": "text"
+  },
+  "n_pairs": 60,
+  "requests_total": 160,
+  "requests_failed": 0,
+  "overall": {
+    "n": 60,
+    "baseline_correct": 60,
+    "baseline_accuracy": 1.0,
+    "repeat_correct": 59,
+    "repeat_accuracy": 0.9833333333333333,
+    "delta_pp": -1.6666666666666718,
+    "fixed": 0,
+    "broken": 1,
+    "both_correct": 59,
+    "both_wrong": 0,
+    "mcnemar_exact_p": 1.0,
+    "bootstrap_ci_95_pp": [
+      -5.0,
+      0.0
+    ],
+    "verdict": "unclear",
+    "near_ceiling": true
+  },
+  "by_suite": {
+    "stress": {
+      "n": 0
+    },
+    "practical": {
+      "n": 60,
+      "baseline_correct": 60,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 59,
+      "repeat_accuracy": 0.9833333333333333,
+      "delta_pp": -1.6666666666666718,
+      "fixed": 0,
+      "broken": 1,
+      "both_correct": 59,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        -5.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    }
+  },
+  "by_category": {
+    "date_interval_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 12,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "filter_record_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 12,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "letter_count_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 11,
+      "repeat_accuracy": 0.9166666666666666,
+      "delta_pp": -8.333333333333337,
+      "fixed": 0,
+      "broken": 1,
+      "both_correct": 11,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        -25.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "receipt_total_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 12,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    },
+    "spanish_mcq_ru": {
+      "n": 12,
+      "baseline_correct": 12,
+      "baseline_accuracy": 1.0,
+      "repeat_correct": 12,
+      "repeat_accuracy": 1.0,
+      "delta_pp": 0.0,
+      "fixed": 0,
+      "broken": 0,
+      "both_correct": 12,
+      "both_wrong": 0,
+      "mcnemar_exact_p": 1.0,
+      "bootstrap_ci_95_pp": [
+        0.0,
+        0.0
+      ],
+      "verdict": "unclear",
+      "near_ceiling": true
+    }
+  },
+  "efficiency": {
+    "baseline": {
+      "n": 60,
+      "latency_ms_median": 2068.3720000000003,
+      "latency_ms_mean": 2384.92815,
+      "latency_ms_p95": 4291.919,
+      "input_tokens_total": 7299,
+      "input_tokens_mean": 121.65,
+      "output_tokens_total": 150,
+      "output_tokens_mean": 2.542372881355932,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 48162,
+      "cost_usd_total": 0.1229697,
+      "cost_usd_mean": 0.002049495
+    },
+    "repeat_2": {
+      "n": 60,
+      "latency_ms_median": 2052.9995,
+      "latency_ms_mean": 2580.5968166666667,
+      "latency_ms_p95": 5810.859,
+      "input_tokens_total": 14598,
+      "input_tokens_mean": 243.3,
+      "output_tokens_total": 150,
+      "output_tokens_mean": 2.5,
+      "cached_input_tokens_total": 0,
+      "thoughts_tokens_total": 49302,
+      "cost_usd_total": 0.1280094,
+      "cost_usd_mean": 0.00213349
+    },
+    "input_token_ratio": 2.0,
+    "latency_median_delta_pct": -0.743217370956506,
+    "latency_median_delta_ms": -15.3725000000004,
+    "paired_latency_delta_ms_median": -51.215499999999906
+  },
+  "repeats_analysis": null,
+  "stability_pilot": {
+    "n_tasks": 20,
+    "disagreements": 0,
+    "disagreement_rate": 0.0,
+    "threshold": 0.05,
+    "repeats_recommended": 1,
+    "rows": [
+      {
+        "task_id": "letter_count_ru_006",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_009",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_004",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_012",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_007",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_008",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_012",
+        "answer_1": "D",
+        "answer_2": "D",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_006",
+        "answer_1": "B15",
+        "answer_2": "B15",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_008",
+        "answer_1": "A66",
+        "answer_2": "A66",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_008",
+        "answer_1": "C",
+        "answer_2": "C",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_005",
+        "answer_1": "A80",
+        "answer_2": "A80",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_008",
+        "answer_1": "125.29",
+        "answer_2": "125.29",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_002",
+        "answer_1": "80.91",
+        "answer_2": "80.91",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_012",
+        "answer_1": "243",
+        "answer_2": "243",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_007",
+        "answer_1": "A81",
+        "answer_2": "A81",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_005",
+        "answer_1": "11",
+        "answer_2": "11",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_005",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_001",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_008",
+        "answer_1": "20",
+        "answer_2": "20",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_007",
+        "answer_1": "D",
+        "answer_2": "D",
+        "agree": true
+      }
+    ]
+  },
+  "parse_errors": {
+    "baseline": 0,
+    "repeat_2": 0
+  },
+  "finish_reasons": {
+    "STOP": 120
+  },
+  "spent_usd": 0.3173795999999998
+}

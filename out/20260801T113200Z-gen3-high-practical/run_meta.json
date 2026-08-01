@@ -1,0 +1,224 @@
+{
+  "run_started_utc": "2026-08-01T11:33:34.095Z",
+  "preset": "standard",
+  "n_tasks": 60,
+  "dataset_sha256": "ffbe5c9aa5708b3abab695a3ac40d4829d7c83fce0541684264f9623e997384c",
+  "model": {
+    "label": "gen3high",
+    "provider": "google",
+    "api_style": "gemini_generate_content",
+    "model_id": "gemini-3.5-flash-lite",
+    "base_url": "https://generativelanguage.googleapis.com/v1beta",
+    "reasoning_mode": "high",
+    "reasoning_disable_method": "not applicable; thinking deliberately enabled",
+    "reasoning_evidence_field": "usageMetadata.thoughtsTokenCount",
+    "thinking_config": {
+      "thinkingLevel": "high"
+    },
+    "request_overrides": {
+      "maxOutputTokens": 8192
+    },
+    "pricing": {
+      "input_per_million_usd": 0.3,
+      "output_per_million_usd": 2.5,
+      "cached_input_per_million_usd": null,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "retrieved_utc": "2026-07-31"
+    }
+  },
+  "api_key_env": "GOOGLE_GENERATIVE_AI_API_KEY",
+  "request_defaults": {
+    "temperature": 0,
+    "max_output_tokens": 64,
+    "system_prompt": null,
+    "tools": "disabled",
+    "web_search": "disabled",
+    "response_format": "text"
+  },
+  "experiment": {
+    "seed": 20260731,
+    "preset": "standard",
+    "repeats_per_condition": 1,
+    "warmup_requests": 5,
+    "concurrency": 1,
+    "request_timeout_seconds": 120,
+    "max_retries": 5,
+    "max_total_requests": 250,
+    "max_budget_usd": 1.0,
+    "bootstrap_resamples": 10000,
+    "stability_pilot_tasks": 20,
+    "conditions": [
+      "baseline",
+      "repeat_2"
+    ],
+    "ablation": {
+      "suite": "practical",
+      "tag": "gen3-high-practical",
+      "max_output_tokens": null
+    }
+  },
+  "warmup": [
+    {
+      "i": 1,
+      "http_status": 200,
+      "latency_ms": 896.718,
+      "ok": true
+    },
+    {
+      "i": 2,
+      "http_status": 200,
+      "latency_ms": 1046.317,
+      "ok": true
+    },
+    {
+      "i": 3,
+      "http_status": 200,
+      "latency_ms": 1095.28,
+      "ok": true
+    },
+    {
+      "i": 4,
+      "http_status": 200,
+      "latency_ms": 835.983,
+      "ok": true
+    },
+    {
+      "i": 5,
+      "http_status": 200,
+      "latency_ms": 701.062,
+      "ok": true
+    }
+  ],
+  "stability_pilot": {
+    "n_tasks": 20,
+    "disagreements": 0,
+    "disagreement_rate": 0.0,
+    "threshold": 0.05,
+    "repeats_recommended": 1,
+    "rows": [
+      {
+        "task_id": "letter_count_ru_006",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_009",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_004",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_012",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_007",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_008",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_012",
+        "answer_1": "D",
+        "answer_2": "D",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_006",
+        "answer_1": "B15",
+        "answer_2": "B15",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_008",
+        "answer_1": "A66",
+        "answer_2": "A66",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_008",
+        "answer_1": "C",
+        "answer_2": "C",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_005",
+        "answer_1": "A80",
+        "answer_2": "A80",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_008",
+        "answer_1": "125.29",
+        "answer_2": "125.29",
+        "agree": true
+      },
+      {
+        "task_id": "receipt_total_ru_002",
+        "answer_1": "80.91",
+        "answer_2": "80.91",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_012",
+        "answer_1": "243",
+        "answer_2": "243",
+        "agree": true
+      },
+      {
+        "task_id": "filter_record_ru_007",
+        "answer_1": "A81",
+        "answer_2": "A81",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_005",
+        "answer_1": "11",
+        "answer_2": "11",
+        "agree": true
+      },
+      {
+        "task_id": "letter_count_ru_005",
+        "answer_1": "1",
+        "answer_2": "1",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_001",
+        "answer_1": "A",
+        "answer_2": "A",
+        "agree": true
+      },
+      {
+        "task_id": "date_interval_ru_008",
+        "answer_1": "20",
+        "answer_2": "20",
+        "agree": true
+      },
+      {
+        "task_id": "spanish_mcq_ru_007",
+        "answer_1": "D",
+        "answer_2": "D",
+        "agree": true
+      }
+    ]
+  },
+  "run_finished_utc": "2026-08-01T11:38:32.128Z",
+  "requests_made": 165,
+  "spent_usd": 0.3173795999999998
+}
