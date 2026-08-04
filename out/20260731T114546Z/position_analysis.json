@@ -1,0 +1,31 @@
+{
+  "run": "20260731T114546Z",
+  "n_pairs": 80,
+  "thirds": [
+    {
+      "third": "first",
+      "n": 26,
+      "baseline_ok": 12,
+      "baseline_pct": 46.15384615384615,
+      "delta_pp": 38.46153846153846
+    },
+    {
+      "third": "middle",
+      "n": 26,
+      "baseline_ok": 6,
+      "baseline_pct": 23.076923076923077,
+      "delta_pp": 7.6923076923076925
+    },
+    {
+      "third": "last",
+      "n": 28,
+      "baseline_ok": 11,
+      "baseline_pct": 39.285714285714285,
+      "delta_pp": -3.5714285714285716
+    }
+  ],
+  "u_curve_fisher_p": 0.1357078684298499,
+  "trend_spearman_rho": -0.2899422979246074,
+  "trend_spearman_p": 0.009085926663529755,
+  "trend_permutation_p": 0.010999450027498626
+}

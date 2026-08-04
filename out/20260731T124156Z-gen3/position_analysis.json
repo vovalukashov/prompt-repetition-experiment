@@ -1,0 +1,31 @@
+{
+  "run": "20260731T124156Z-gen3",
+  "n_pairs": 80,
+  "thirds": [
+    {
+      "third": "first",
+      "n": 26,
+      "baseline_ok": 10,
+      "baseline_pct": 38.46153846153846,
+      "delta_pp": 26.923076923076923
+    },
+    {
+      "third": "middle",
+      "n": 26,
+      "baseline_ok": 11,
+      "baseline_pct": 42.30769230769231,
+      "delta_pp": 34.61538461538461
+    },
+    {
+      "third": "last",
+      "n": 28,
+      "baseline_ok": 15,
+      "baseline_pct": 53.57142857142857,
+      "delta_pp": 28.571428571428573
+    }
+  ],
+  "u_curve_fisher_p": 0.8128314994405919,
+  "trend_spearman_rho": -0.04211546936973788,
+  "trend_spearman_p": 0.7106909524861319,
+  "trend_permutation_p": 0.7405129743512824
+}
